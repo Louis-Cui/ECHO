@@ -19,6 +19,7 @@ class EmotionLabel(str, enum.Enum):
     neutral = "neutral"
     anxious = "anxious"
     love = "love"
+    upset = "upset"
 
 
 class EmotionOutput(BaseModel):

@@ -96,10 +96,17 @@ class SenseVoiceASR:
 
             kwargs: dict = {
                 "model": "iic/SenseVoiceSmall",
-                "vad_model": "iic/speech_fsmn_vad_zh-cn",
-                "punc_model": "iic/punc_ct-transformer_zh-cn-0.2.2",
                 "device": self.device,
             }
+
+            # If model_dir exists, load from local path
+            if self.model_dir and os.path.isdir(self.model_dir):
+                kwargs["model"] = self.model_dir
+                logger.info("Loading SenseVoiceSmall from local: %s", self.model_dir)
+            else:
+                # 在线下载时附上 VAD/标点模型
+                kwargs["vad_model"] = "iic/speech_fsmn_vad_zh-cn"
+                kwargs["punc_model"] = "iic/punc_ct-transformer_zh-cn-0.2.2"
 
             # If model_dir exists, load from local path
             if self.model_dir and os.path.isdir(self.model_dir):

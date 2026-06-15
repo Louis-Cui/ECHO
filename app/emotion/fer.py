@@ -39,7 +39,7 @@ class FERClassifier:
     def _init_detector(self) -> None:
         """Initialise FER detector, falling back from MTCNN to OpenCV."""
         try:
-            from fer import FER
+            from fer.fer import FER
 
             # Attempt MTCNN (more accurate, slower)
             try:

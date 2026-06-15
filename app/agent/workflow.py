@@ -199,12 +199,16 @@ class CompanionAgent:
         text_lower = text.lower()
 
         love_words = ["爱", "喜欢", "想念", "love", "miss", "cute", "可爱"]
+        upset_words = ["怪怪的", "不对劲", "烦闷", "烦躁", "upset", "郁闷", "低沉", "不太舒服"]
         sad_words = ["难过", "伤心", "悲伤", "不开心", "失落", "sad", "cry", "哭"]
         angry_words = ["生气", "愤怒", "气死", "烦", "angry", "mad", "烦死了"]
         happy_words = ["开心", "高兴", "快乐", "棒", "好开心", "happy", "哈哈"]
         fear_words = ["害怕", "恐惧", "担心", "慌", "scared", "afraid", "worried"]
         anxious_words = ["焦虑", "紧张", "不安", "anxious", "nervous", "压力"]
 
+        for word in upset_words:
+            if word in text_lower:
+                return EmotionOutput(emotion=EmotionLabel.upset, confidence=0.65, cause=word)
         for word in love_words:
             if word in text_lower:
                 return EmotionOutput(emotion=EmotionLabel.love, confidence=0.6, cause=word)
@@ -394,7 +398,7 @@ class CompanionAgent:
         # Ensure the response emotion is appropriate — don't be sad/angry
         # even if user is, the companion should be supportive
         if label in (EmotionLabel.sad, EmotionLabel.angry, EmotionLabel.fearful,
-                     EmotionLabel.disgusted, EmotionLabel.anxious):
+                     EmotionLabel.disgusted, EmotionLabel.anxious, EmotionLabel.upset):
             # If companion response mirrors negative emotion, blend to gentle/warm
             label = EmotionLabel.neutral
 

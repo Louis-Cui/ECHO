@@ -1,0 +1,15 @@
+# ── Live2D 渲染 ──
+live2d-py>=0.2.0        # Python Live2D 渲染
+glfw>=2.7.0             # OpenGL 窗口
+PyOpenGL>=3.1.7         # OpenGL 绑定
+
+# ── 音频 ──
+pyaudio>=0.2.14         # 录音
+pygame>=2.6.0           # 音频播放
+pydub>=0.25.1           # 音频处理
+
+# ── 快捷键 ──
+keyboard>=0.13.5        # 全局快捷键
+
+# ── HTTP ──
+requests>=2.32.0        # HTTP 客户端

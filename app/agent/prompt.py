@@ -123,4 +123,8 @@ emotion_to_personality: Dict[EmotionLabel, Dict[str, str]] = {
         "tone": "温暖、甜蜜",
         "style": "温暖回应，一起分享美好感受",
     },
+    EmotionLabel.upset: {
+        "tone": "温柔、体谅",
+        "style": "先倾听，不要急着分析原因，表示你注意到了ta的不对劲",
+    },
 }

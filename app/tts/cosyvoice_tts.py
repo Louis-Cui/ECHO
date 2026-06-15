@@ -41,6 +41,7 @@ EMOTION_VOICE_MAP: Dict[EmotionLabel, Dict[str, float]] = {
     EmotionLabel.surprised: {"speed": 1.30, "pitch_shift": 1.40},
     EmotionLabel.fearful: {"speed": 0.95, "pitch_shift": 0.85},
     EmotionLabel.disgusted: {"speed": 0.90, "pitch_shift": 0.90},
+    EmotionLabel.upset: {"speed": 0.85, "pitch_shift": 0.75},
 }
 
 

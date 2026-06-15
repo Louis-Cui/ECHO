@@ -38,6 +38,17 @@ class MemoryRAG:
     def _init_chroma(self) -> None:
         """Initialise Chroma persistent client and collection."""
         try:
+            import sqlite3
+            if sqlite3.sqlite_version < "3.35.0":
+                # Try to use pysqlite3 if available
+                try:
+                    import pysqlite3 as sqlite3
+                    import chromadb
+                    # Monkey patch
+                    import sys
+                    sys.modules['sqlite3'] = sqlite3
+                except ImportError:
+                    pass
             import chromadb
             self.client = chromadb.PersistentClient(path=self.persist_dir)
             self.collection = self.client.get_or_create_collection(
@@ -52,6 +63,14 @@ class MemoryRAG:
             logger.error(
                 "chromadb not installed: pip install chromadb\n  %s", e
             )
+            raise
+        except RuntimeError as e:
+            if "sqlite3" in str(e).lower():
+                logger.error(
+                    "SQLite3 version too old. Please upgrade sqlite3 >= 3.35.0\n"
+                    "Windows: download sqlite3.dll from https://sqlite.org/download.html\n"
+                    "  %s", e
+                )
             raise
 
     def _get_embedding(self, text: str) -> List[float]:
