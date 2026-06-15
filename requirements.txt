@@ -1,39 +1,40 @@
 # 核心框架
-fastapi==0.115.0
-uvicorn[standard]==0.30.0
-pydantic==2.9.0
-python-multipart==0.0.9
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.9.0
+python-multipart>=0.0.9
 
 # ASR
-funasr==1.0.0
-modelscope==1.18.0
-torch==2.1.2
-torchaudio==2.1.2
+funasr>=1.0.0
+modelscope>=1.18.0
+torch>=1.0.0
+torchaudio>=1.0.0
 
-# TTS
-cosyvoice @ git+https://github.com/FunAudioLLM/CosyVoice.git
+# TTS (CosyVoice 本地源码，见 CosyVoice/ 目录)
+# 需安装: pip install matcha-tts pyworld
 
 # LangGraph Agent
-langgraph==0.2.0
-langchain==0.3.0
-langchain-community==0.3.0
-langchain-deepseek==0.1.0
-openai==1.50.0
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-deepseek>=0.1.0
+openai>=1.50.0
 
 # RAG记忆
-chromadb==0.5.0
-sentence-transformers==3.0.0
+chromadb>=0.5.0
+sentence-transformers>=3.0.0
 
 # 面部情绪
-fer==23.1.1
-opencv-python-headless==4.10.0
+fer>=23.1.1
+opencv-python-headless>=4.10.0
 
 # 调度
-apscheduler==3.10.0
+apscheduler>=3.10.0
 
 # 工具
-redis==5.1.0
-numpy==1.26.0
-soundfile==0.12.1
-pydub==0.25.1
-python-dotenv==1.0.0
+redis>=5.1.0
+numpy>=1.26.0
+soundfile>=0.12.1
+pydub>=0.25.1
+python-dotenv>=1.0.0
+requests>=2.32.0
