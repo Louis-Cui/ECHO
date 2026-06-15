@@ -9,12 +9,23 @@ from __future__ import annotations
 import io
 import logging
 import os
+import sys
 import tempfile
 from typing import Dict, Optional, Tuple
 
 import soundfile as sf
 
 from app.models.schemas import EmotionLabel
+
+# ── Add cloned CosyVoice repo to path ──────────────────────────
+_cosyvoice_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "..", "..", "CosyVoice",
+)
+if os.path.exists(os.path.join(_cosyvoice_path, "cosyvoice", "cli")):
+    sys.path.insert(0, _cosyvoice_path)
+    logger = logging.getLogger("digital-companion.tts")
+    logger.info("已添加 CosyVoice 仓库路径: %s", _cosyvoice_path)
 
 logger = logging.getLogger("digital-companion.tts")
 

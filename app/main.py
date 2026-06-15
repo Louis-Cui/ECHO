@@ -19,8 +19,16 @@ import base64
 import logging
 import os
 import sys
+import time
 from contextlib import asynccontextmanager
 from typing import Optional
+
+from dotenv import load_dotenv
+
+# ── Load .env from project root (before anything else) ─────────
+_env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
+if os.path.exists(_env_path):
+    load_dotenv(_env_path)
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, UploadFile, File
@@ -173,6 +181,60 @@ async def health():
             "scheduler": care_scheduler is not None,
         },
     }
+
+
+# ── OpenAI-compatible endpoint ──────────────────────────────────────
+# 让 Human-Live2D 前端可以通过 OpenAI 协议调用我们的 Agent
+
+
+@app.post("/v1/chat/completions")
+async def openai_chat_completions(request: dict):
+    """OpenAI-compatible chat completions endpoint for Human-Live2D."""
+    if not agent:
+        raise HTTPException(status_code=503, detail="Agent模块未就绪")
+    try:
+        messages = request.get("messages", [])
+        stream = request.get("stream", False)
+        
+        # Extract the last user message
+        user_message = ""
+        for msg in reversed(messages):
+            if msg.get("role") == "user":
+                user_message = msg.get("content", "")
+                break
+        
+        if not user_message:
+            raise HTTPException(status_code=400, detail="No user message found")
+        
+        # Call our agent
+        result = agent.invoke(user_input=user_message, user_id="human-live2d")
+        
+        # Build OpenAI-compatible response
+        response = {
+            "id": f"chatcmpl-{id(result)}",
+            "object": "chat.completion",
+            "created": int(time.time()),
+            "model": request.get("model", "digital-companion"),
+            "choices": [
+                {
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": result.text,
+                    },
+                    "finish_reason": "stop",
+                }
+            ],
+            "usage": {
+                "prompt_tokens": -1,
+                "completion_tokens": -1,
+                "total_tokens": -1,
+            },
+        }
+        return response
+    except Exception as e:
+        logger.exception("OpenAI endpoint error")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ── ASR Endpoints ─────────────────────────────────────────────────
@@ -346,6 +408,6 @@ if __name__ == "__main__":
         "app.main:app",
         host=host,
         port=port,
-        reload=True,
+        reload=False,
         log_level="info",
     )
