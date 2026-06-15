@@ -1,0 +1,7 @@
+CosyVoice/ 
+awesome-digital-human-live2d/ 
+pretrained_models/ 
+*.wav 
+*.mp3 
+__pycache__/ 
+.env 
